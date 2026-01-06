@@ -109,6 +109,35 @@
         }
 
         /* TOMBOL WEBSITE */
+        .web-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .web-dropdown {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .web-dropdown option {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 10px;
+        }
+
         .website-btn {
             background: linear-gradient(145deg, #27ae60, #2ecc71);
             border: none;
@@ -122,7 +151,6 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 10px;
         }
 
         .website-btn:hover {
@@ -430,11 +458,17 @@
         </div>
 
         <div id="menuScreen" class="menu-screen">
-            <!-- TOMBOL WEBSITE -->
-            <button id="websiteBtn" class="website-btn" onclick="openWebsite()">
-                <span class="icon">🌐</span>
-                <span id="websiteBtnText">Buka Website</span>
-            </button>
+        <!-- TOMBOL WEBSITE -->
+            <div class="web-selector">
+                <select id="webSelect" class="web-dropdown">
+                    <option value="web1">🎮 Web 1 - Game Quiz</option>
+                    <option value="web2">🌐 Web 2 - Website Lain</option>
+                </select>
+                <button class="website-btn" onclick="openSelectedWeb()">
+                    <span class="icon">🚀</span>
+                    <span>Buka</span>
+                </button>
+            </div>
 
             <div class="tab-nav">
                 <button class="tab-btn active" onclick="showTab('quizzes')">📝 Kuis</button>
@@ -495,12 +529,15 @@
 
     <script>
         // =============================================
-        // SUPABASE CONFIGURATION
+        // CONFIGURATION
         // =============================================
         var SUPABASE_URL = 'https://effvadhjfptjvfhllcrt.supabase.co';
         var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZnZhZGhqZnB0anZmaGxsY3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2ODczODEsImV4cCI6MjA4MzI2MzM4MX0.ZVTvMEDt5FuxIZIn0SrMwQ7rFFmmRkP5UmvnOGGVHrw';
         
-        // URL Website
+        // URL Web 1 - Game Quiz (fix, tidak berubah)
+        var GAME_WEB_URL = 'https://quiz-master-zeta-three.vercel.app';
+        
+        // URL Web 2 - Website Lain (dari Supabase, bisa diganti kapan aja)
         var externalWebsiteUrl = '';
 
         // Load Website URL dari Supabase
@@ -522,36 +559,39 @@
                         var data = JSON.parse(xhr.responseText);
                         if (data && data.length > 0 && data[0].config_value) {
                             externalWebsiteUrl = data[0].config_value;
-                            document.getElementById('websiteBtn').disabled = false;
-                            document.getElementById('websiteBtnText').textContent = 'Buka Website';
+                            console.log('Web 2 URL loaded:', externalWebsiteUrl);
                         } else {
-                            document.getElementById('websiteBtnText').textContent = 'URL Belum Diatur';
-                            document.getElementById('websiteBtn').disabled = true;
+                            console.log('Web 2 URL belum diatur');
                         }
                     } catch (e) {
-                        document.getElementById('websiteBtnText').textContent = 'Error';
-                        document.getElementById('websiteBtn').disabled = true;
+                        console.log('Error parsing response:', e);
                     }
                 } else {
-                    document.getElementById('websiteBtnText').textContent = 'Gagal Memuat';
-                    document.getElementById('websiteBtn').disabled = true;
+                    console.log('HTTP error:', xhr.status);
                 }
             };
             
             xhr.onerror = function() {
-                document.getElementById('websiteBtnText').textContent = 'Koneksi Error';
-                document.getElementById('websiteBtn').disabled = true;
+                console.log('Network error');
             };
             
             xhr.send();
         }
 
-        // Buka Website
-        function openWebsite() {
-            if (externalWebsiteUrl && externalWebsiteUrl !== '') {
-                window.location.href = externalWebsiteUrl;
-            } else {
-                alert('URL website belum diatur di Supabase.\n\nBuka Supabase > Table Editor > app_config > external_url');
+        // Buka Web berdasarkan pilihan dropdown
+        function openSelectedWeb() {
+            var selected = document.getElementById('webSelect').value;
+            
+            if (selected === 'web1') {
+                // Web 1 - Game Quiz (fix URL)
+                window.open(GAME_WEB_URL, '_blank');
+            } else if (selected === 'web2') {
+                // Web 2 - Website Lain (dari Supabase)
+                if (externalWebsiteUrl && externalWebsiteUrl !== '') {
+                    window.open(externalWebsiteUrl, '_blank');
+                } else {
+                    alert('URL Web 2 belum diatur di Supabase.\n\nBuka Supabase > Table Editor > app_config > external_url');
+                }
             }
         }
 
