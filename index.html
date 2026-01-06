@@ -1223,28 +1223,20 @@
                 earnedCoins = 1;
             }
             
-            // Debug alert - hapus nanti setelah fix
-            alert('Jawaban benar: ' + correctAnswers + '/' + totalQuestions + '\nKoin dapat: ' + earnedCoins + '\nKoin sebelum: ' + userCoins);
-            
             if (earnedCoins > 0) {
                 userCoins = userCoins + earnedCoins;
-                
-                // Debug alert
-                alert('Koin sekarang: ' + userCoins);
                 
                 // Save to localStorage
                 try {
                     localStorage.setItem('quiz_user_coins', userCoins.toString());
                 } catch(e) {
-                    alert('Error save: ' + e);
+                    console.log('Save error:', e);
                 }
                 
                 // Update display immediately
                 var coinEl = document.getElementById('coinAmount');
                 if (coinEl) {
                     coinEl.textContent = userCoins;
-                } else {
-                    alert('Element coinAmount tidak ditemukan!');
                 }
                 
                 // Update claim button
@@ -1327,6 +1319,18 @@
             var playerName = getPlayerName();
             document.querySelector('.user-name').textContent = playerName;
             document.querySelector('.user-avatar').textContent = playerName.charAt(0).toUpperCase();
+            
+            // Load completed quizzes count
+            try {
+                var completed = localStorage.getItem('quiz_completed_count');
+                completed = completed ? parseInt(completed) : 0;
+                var statsEl = document.querySelector('.user-stats');
+                if (statsEl) {
+                    statsEl.textContent = completed + ' kuis selesai';
+                }
+            } catch(e) {
+                console.log('Error loading completed count:', e);
+            }
         }
 
         function loadWebsiteUrl() {
@@ -1663,6 +1667,22 @@
             updateCompletedQuizzes();
         }
 
+        function updateCompletedQuizzes() {
+            // Update jumlah quiz yang sudah diselesaikan
+            try {
+                var completed = localStorage.getItem('quiz_completed_count');
+                completed = completed ? parseInt(completed) + 1 : 1;
+                localStorage.setItem('quiz_completed_count', completed.toString());
+                
+                var statsEl = document.querySelector('.user-stats');
+                if (statsEl) {
+                    statsEl.textContent = completed + ' kuis selesai';
+                }
+            } catch(e) {
+                console.log('Error updating completed quizzes:', e);
+            }
+        }
+
         function shuffleArray(array) {
             var newArray = array.slice();
             for (var i = newArray.length - 1; i > 0; i--) {
@@ -1859,9 +1879,6 @@
 
                     // Save Trivia result ke Supabase
                     saveResult('trivia', Math.round(percentage), Math.round(percentage) + '%');
-                    
-                    // Debug: cek sebelum addCoins
-                    alert('DEBUG Trivia - Score: ' + score + ', Questions: ' + questions.length);
                     
                     // Add coins for Trivia quiz
                     addCoins(score, questions.length);
