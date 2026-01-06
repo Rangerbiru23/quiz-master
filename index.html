@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz Master - Tes MBTI & IQ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1em;
+        }
+
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #e94560, #f39c12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .user-name {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .user-stats {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #27ae60;
+        }
+
+        .menu-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* TOMBOL WEBSITE */
+        .website-btn {
+            background: linear-gradient(145deg, #27ae60, #2ecc71);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 25px;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .website-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .website-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .website-btn .icon {
+            font-size: 1.3em;
+        }
+
+        .quiz-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            border-color: #e94560;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+        }
+
+        .quiz-card h3 {
+            color: #fff;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .quiz-card .icon {
+            font-size: 1.8em;
+        }
+
+        .quiz-card .best-score {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 13px;
+            color: #f39c12;
+        }
+
+        .quiz-screen {
+            display: none;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #e94560, #f39c12);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .question-counter {
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .question-text {
+            color: #fff;
+            font-size: 1.4em;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 18px 25px;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: rgba(233, 69, 96, 0.3);
+            border-color: #e94560;
+            transform: translateX(10px);
+        }
+
+        .option-btn.correct {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .option-btn.wrong {
+            background: #c0392b;
+            border-color: #c0392b;
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            color: #fff;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .result-type {
+            color: #e94560;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .result-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .result-score {
+            color: #f39c12;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(145deg, #e94560, #c73e54);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 40px;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .timer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .timer-display {
+            color: #f39c12;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .mbti-traits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .trait-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .trait-card .label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .trait-card .value {
+            color: #e94560;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 1s ease infinite;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #e94560;
+            color: #fff;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+
+            .mbti-traits {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Quiz Master</h1>
+            <p>Uji kepribadian dan kecerdasanmu!</p>
+        </div>
+
+        <div id="userBar" class="user-bar">
+            <div class="user-info">
+                <div class="user-avatar">?</div>
+                <div>
+                    <div class="user-name">Pemain</div>
+                    <div class="user-stats">0 kuis selesai</div>
+                </div>
+            </div>
+            <div class="sync-status">
+                <div class="sync-dot"></div>
+                <span>Terhubung</span>
+            </div>
+        </div>
+
+        <div id="menuScreen" class="menu-screen">
+            <!-- TOMBOL WEBSITE -->
+            <button id="websiteBtn" class="website-btn" onclick="openWebsite()">
+                <span class="icon">🌐</span>
+                <span id="websiteBtnText">Buka Website</span>
+            </button>
+
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="showTab('quizzes')">📝 Kuis</button>
+                <button class="tab-btn" onclick="showTab('leaderboard')">🏆 Peringkat</button>
+                <button class="tab-btn" onclick="showTab('history')">📊 Riwayat</button>
+            </div>
+
+            <div id="quizzesTab">
+                <div class="quiz-card" onclick="startQuiz('mbti')">
+                    <h3><span class="icon">🎭</span> Tes Kepribadian MBTI</h3>
+                    <p>Temukan tipe kepribadianmu! Apakah kamu INTJ, ENFP, atau salah satu dari 16 tipe kepribadian unik lainnya.</p>
+                    <div class="best-score">Belum pernah mencoba</div>
+                </div>
+                <div class="quiz-card" onclick="startQuiz('iq')">
+                    <h3><span class="icon">🧩</span> Tes IQ</h3>
+                    <p>Tantang kemampuan berpikir logis, pengenalan pola, dan pemecahan masalahmu.</p>
+                    <div class="best-score">Belum pernah mencoba</div>
+                </div>
+                <div class="quiz-card" onclick="startQuiz('trivia')">
+                    <h3><span class="icon">🌍</span> Pengetahuan Umum</h3>
+                    <p>Uji pengetahuanmu dalam berbagai topik termasuk sains, sejarah, dan geografi.</p>
+                    <div class="best-score">Belum pernah mencoba</div>
+                </div>
+            </div>
+
+            <div id="leaderboardTab" style="display: none;">
+                <p style="color: rgba(255,255,255,0.6); text-align: center;">Segera hadir!</p>
+            </div>
+
+            <div id="historyTab" style="display: none;">
+                <p style="color: rgba(255,255,255,0.6); text-align: center;">Segera hadir!</p>
+            </div>
+        </div>
+
+        <div id="quizScreen" class="quiz-screen">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="timer" class="timer" style="display: none;">
+                <span class="timer-display" id="timerDisplay">30</span>
+            </div>
+            <div id="questionCounter" class="question-counter"></div>
+            <div id="questionText" class="question-text"></div>
+            <div id="options" class="options"></div>
+        </div>
+
+        <div id="resultScreen" class="result-screen">
+            <div id="resultIcon" class="result-icon"></div>
+            <div id="resultTitle" class="result-title"></div>
+            <div id="resultType" class="result-type"></div>
+            <div id="mbtiTraits" class="mbti-traits" style="display: none;"></div>
+            <div id="resultDescription" class="result-description"></div>
+            <div id="resultScore" class="result-score"></div>
+            <button class="btn" onclick="restartQuiz()">🔄 Coba Lagi</button>
+            <button class="btn btn-secondary" onclick="goToMenu()">🏠 Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // SUPABASE CONFIGURATION
+        // =============================================
+        var SUPABASE_URL = 'https://effvadhjfptjvfhllcrt.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmZnZhZGhqZnB0anZmaGxsY3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2ODczODEsImV4cCI6MjA4MzI2MzM4MX0.ZVTvMEDt5FuxIZIn0SrMwQ7rFFmmRkP5UmvnOGGVHrw';
+        
+        // URL Website
+        var externalWebsiteUrl = '';
+
+        // Load Website URL dari Supabase
+        window.onload = function() {
+            loadWebsiteUrl();
+        };
+
+        function loadWebsiteUrl() {
+            var xhr = new XMLHttpRequest();
+            var url = SUPABASE_URL + '/rest/v1/app_config?config_key=eq.external_url&select=config_value';
+            
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('apikey', SUPABASE_ANON_KEY);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + SUPABASE_ANON_KEY);
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data && data.length > 0 && data[0].config_value) {
+                            externalWebsiteUrl = data[0].config_value;
+                            document.getElementById('websiteBtn').disabled = false;
+                            document.getElementById('websiteBtnText').textContent = 'Buka Website';
+                        } else {
+                            document.getElementById('websiteBtnText').textContent = 'URL Belum Diatur';
+                            document.getElementById('websiteBtn').disabled = true;
+                        }
+                    } catch (e) {
+                        document.getElementById('websiteBtnText').textContent = 'Error';
+                        document.getElementById('websiteBtn').disabled = true;
+                    }
+                } else {
+                    document.getElementById('websiteBtnText').textContent = 'Gagal Memuat';
+                    document.getElementById('websiteBtn').disabled = true;
+                }
+            };
+            
+            xhr.onerror = function() {
+                document.getElementById('websiteBtnText').textContent = 'Koneksi Error';
+                document.getElementById('websiteBtn').disabled = true;
+            };
+            
+            xhr.send();
+        }
+
+        // Buka Website
+        function openWebsite() {
+            if (externalWebsiteUrl && externalWebsiteUrl !== '') {
+                window.location.href = externalWebsiteUrl;
+            } else {
+                alert('URL website belum diatur di Supabase.\n\nBuka Supabase > Table Editor > app_config > external_url');
+            }
+        }
+
+        // =============================================
+        // QUIZ DATA
+        // =============================================
+        var mbtiQuestions = [
+            { question: "Di sebuah pesta, kamu lebih suka...", options: [{ text: "Berbicara dengan banyak orang, termasuk yang baru dikenal", type: "E" }, { text: "Berbicara dengan beberapa orang yang sudah dikenal", type: "I" }] },
+            { question: "Kamu lebih tertarik dengan...", options: [{ text: "Fakta dan detail yang nyata", type: "S" }, { text: "Ide dan kemungkinan baru", type: "N" }] },
+            { question: "Dalam mengambil keputusan, kamu lebih mengandalkan...", options: [{ text: "Logika dan analisis objektif", type: "T" }, { text: "Perasaan dan nilai-nilai personal", type: "F" }] },
+            { question: "Kamu lebih nyaman dengan...", options: [{ text: "Rencana yang terstruktur dan terorganisir", type: "J" }, { text: "Fleksibilitas dan spontanitas", type: "P" }] },
+            { question: "Setelah bersosialisasi, kamu merasa...", options: [{ text: "Lebih berenergi dan bersemangat", type: "E" }, { text: "Perlu waktu sendiri untuk mengisi ulang energi", type: "I" }] },
+            { question: "Kamu lebih memperhatikan...", options: [{ text: "Apa yang ada di depan mata saat ini", type: "S" }, { text: "Pola dan hubungan yang tersembunyi", type: "N" }] },
+            { question: "Saat teman curhat masalah, kamu cenderung...", options: [{ text: "Memberikan solusi praktis", type: "T" }, { text: "Memberikan dukungan emosional", type: "F" }] },
+            { question: "Soal deadline pekerjaan, kamu...", options: [{ text: "Menyelesaikan jauh sebelum waktunya", type: "J" }, { text: "Bekerja lebih baik di bawah tekanan waktu", type: "P" }] },
+            { question: "Dalam diskusi kelompok, kamu...", options: [{ text: "Aktif menyampaikan pendapat", type: "E" }, { text: "Lebih banyak mendengarkan dulu", type: "I" }] },
+            { question: "Kamu lebih suka belajar dengan cara...", options: [{ text: "Langkah-langkah praktis dan contoh nyata", type: "S" }, { text: "Teori dan konsep abstrak", type: "N" }] },
+            { question: "Saat ada konflik, kamu lebih memilih...", options: [{ text: "Menyelesaikan dengan fakta dan keadilan", type: "T" }, { text: "Menjaga keharmonisan hubungan", type: "F" }] },
+            { question: "Liburan idealmu adalah...", options: [{ text: "Sudah direncanakan dengan detail", type: "J" }, { text: "Spontan dan mengalir begitu saja", type: "P" }] }
+        ];
+
+        var iqQuestions = [
+            { question: "Angka berapa selanjutnya dalam urutan: 2, 4, 8, 16, ?", options: ["24", "32", "28", "30"], correct: 1 },
+            { question: "Jika semua Kucing adalah Hewan dan semua Hewan adalah Makhluk Hidup, apakah semua Kucing pasti Makhluk Hidup?", options: ["Ya", "Tidak", "Mungkin", "Tidak cukup informasi"], correct: 0 },
+            { question: "Berapa hasil dari: 3 + 3 × 3 - 3 ÷ 3 = ?", options: ["11", "12", "9", "6"], correct: 0 },
+            { question: "Manakah yang berbeda dari yang lain?", options: ["Kucing", "Anjing", "Elang", "Hamster"], correct: 2 },
+            { question: "Temukan yang tidak cocok: 8, 27, 64, 100, 125", options: ["8", "27", "100", "125"], correct: 2 },
+            { question: "Angka berapa yang menggantikan tanda tanya? 1, 1, 2, 3, 5, 8, ?", options: ["11", "12", "13", "15"], correct: 2 },
+            { question: "Jika 5 mesin butuh 5 menit untuk membuat 5 barang, berapa lama 100 mesin membuat 100 barang?", options: ["100 menit", "5 menit", "20 menit", "1 menit"], correct: 1 },
+            { question: "Mana yang melengkapi: Buku : Membaca = Garpu : ?", options: ["Makan", "Pisau", "Dapur", "Makanan"], correct: 0 },
+            { question: "Jika hari ini Selasa, hari apa 100 hari dari sekarang?", options: ["Kamis", "Jumat", "Rabu", "Sabtu"], correct: 0 },
+            { question: "Ani lebih tinggi dari Budi. Cici lebih pendek dari Budi. Siapa yang paling tinggi?", options: ["Ani", "Budi", "Cici", "Tidak bisa ditentukan"], correct: 0 },
+            { question: "Berapa angka yang hilang? 3, 6, 11, 18, ?", options: ["25", "27", "29", "24"], correct: 1 },
+            { question: "Jika KOMPUTER = 8 huruf, maka TEKNOLOGI = ?", options: ["9 huruf", "10 huruf", "8 huruf", "11 huruf"], correct: 0 }
+        ];
+
+        var triviaQuestions = [
+            { question: "Planet apa yang dikenal sebagai 'Planet Merah'?", options: ["Venus", "Mars", "Jupiter", "Saturnus"], correct: 1 },
+            { question: "Siapa yang melukis 'Mona Lisa'?", options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"], correct: 2 },
+            { question: "Apa ibu kota Australia?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], correct: 2 },
+            { question: "Berapa jumlah tulang dalam tubuh manusia dewasa?", options: ["186", "206", "226", "246"], correct: 1 },
+            { question: "Tahun berapa Perang Dunia II berakhir?", options: ["1943", "1944", "1945", "1946"], correct: 2 },
+            { question: "Apa unsur kimia dengan simbol 'Au'?", options: ["Perak", "Emas", "Tembaga", "Aluminium"], correct: 1 },
+            { question: "Gunung tertinggi di dunia adalah?", options: ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"], correct: 2 },
+            { question: "Tahun berapa Indonesia merdeka?", options: ["1944", "1945", "1946", "1949"], correct: 1 },
+            { question: "Apa nama galaksi tempat Bumi berada?", options: ["Andromeda", "Bima Sakti", "Triangulum", "Centaurus"], correct: 1 },
+            { question: "Berapa jumlah benua di Bumi?", options: ["5", "6", "7", "8"], correct: 2 },
+            { question: "Siapa presiden pertama Indonesia?", options: ["Soekarno", "Soeharto", "Habibie", "Megawati"], correct: 0 },
+            { question: "Apa mata uang Jepang?", options: ["Yuan", "Won", "Yen", "Ringgit"], correct: 2 },
+            { question: "Sungai terpanjang di dunia adalah?", options: ["Amazon", "Nil", "Yangtze", "Mississippi"], correct: 1 },
+            { question: "Hewan apa yang dikenal sebagai 'Raja Hutan'?", options: ["Harimau", "Singa", "Gajah", "Beruang"], correct: 1 },
+            { question: "Apa nama pulau terbesar di Indonesia?", options: ["Sumatera", "Jawa", "Kalimantan", "Papua"], correct: 2 }
+        ];
+
+        var mbtiDescriptions = {
+            "INTJ": { title: "Sang Arsitek", desc: "Pemikir strategis yang imajinatif dengan rencana untuk segala sesuatu. Kamu adalah orang yang mandiri, percaya diri, dan selalu mencari cara untuk meningkatkan sistem di sekitarmu." },
+            "INTP": { title: "Sang Logikus", desc: "Penemu inovatif dengan rasa penasaran yang tak pernah padam. Kamu menyukai teori dan ide abstrak, serta senang menganalisis dan memahami cara kerja segala sesuatu." },
+            "ENTJ": { title: "Sang Komandan", desc: "Pemimpin tegas dan berani yang selalu menemukan jalan. Kamu memiliki kemampuan alami untuk memimpin dan mengorganisir orang lain menuju tujuan bersama." },
+            "ENTP": { title: "Sang Pendebat", desc: "Pemikir cerdas dan penasaran yang tidak bisa menolak tantangan intelektual. Kamu suka mengeksplorasi ide-ide baru dan berdebat untuk menemukan kebenaran." },
+            "INFJ": { title: "Sang Advokat", desc: "Idealis yang tenang dan mistis, namun sangat menginspirasi. Kamu memiliki intuisi yang kuat dan dedikasi mendalam untuk membantu orang lain mencapai potensi mereka." },
+            "INFP": { title: "Sang Mediator", desc: "Penyair idealis yang selalu mencari kebaikan dalam diri orang lain. Kamu memiliki nilai-nilai yang kuat dan kreativitas yang mendalam untuk mengekspresikan diri." },
+            "ENFJ": { title: "Sang Protagonis", desc: "Pemimpin karismatik yang menginspirasi dan memberdayakan orang lain. Kamu memiliki kemampuan alami untuk memahami dan memotivasi orang-orang di sekitarmu." },
+            "ENFP": { title: "Sang Juru Kampanye", desc: "Semangat bebas yang antusias, kreatif, dan sosial. Kamu adalah orang yang optimis dan selalu melihat potensi di mana-mana, terutama dalam diri orang lain." },
+            "ISTJ": { title: "Sang Logistik", desc: "Individu praktis yang kehandalannya tidak perlu diragukan. Kamu adalah orang yang bertanggung jawab, teliti, dan selalu menepati janji." },
+            "ISFJ": { title: "Sang Pelindung", desc: "Pelindung yang sangat berdedikasi dan hangat. Kamu selalu siap membantu dan melindungi orang-orang yang kamu sayangi dengan setia." },
+            "ESTJ": { title: "Sang Eksekutif", desc: "Administrator yang sangat baik dalam mengelola hal-hal atau orang. Kamu adalah pemimpin yang tegas, terorganisir, dan selalu mengikuti aturan." },
+            "ESFJ": { title: "Sang Konsul", desc: "Orang yang sangat peduli, sosial, dan populer. Kamu senang membantu orang lain dan menciptakan keharmonisan dalam kelompok sosialmu." },
+            "ISTP": { title: "Sang Virtuoso", desc: "Eksperimentalis yang berani dan praktis. Kamu adalah pemecah masalah alami yang suka bekerja dengan tangan dan memahami cara kerja mesin." },
+            "ISFP": { title: "Sang Petualang", desc: "Seniman yang fleksibel dan menawan. Kamu memiliki apresiasi mendalam terhadap keindahan dan selalu mencari pengalaman baru." },
+            "ESTP": { title: "Sang Pengusaha", desc: "Orang yang cerdas, energik, dan sangat perseptif. Kamu suka hidup di saat ini dan tidak takut mengambil risiko untuk mencapai tujuanmu." },
+            "ESFP": { title: "Sang Penghibur", desc: "Penghibur spontan, energik, dan antusias. Kamu adalah pusat perhatian yang alami dan selalu membuat orang di sekitarmu tersenyum." }
+        };
+
+        // =============================================
+        // GAME STATE
+        // =============================================
+        var currentQuiz = '';
+        var currentQuestion = 0;
+        var score = 0;
+        var questions = [];
+        var gameTimer = null;
+        var timeLeft = 30;
+        var mbtiScores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+
+        // =============================================
+        // FUNCTIONS
+        // =============================================
+        function showTab(tab) {
+            var buttons = document.querySelectorAll('.tab-nav .tab-btn');
+            buttons[0].classList.toggle('active', tab === 'quizzes');
+            buttons[1].classList.toggle('active', tab === 'leaderboard');
+            buttons[2].classList.toggle('active', tab === 'history');
+            
+            document.getElementById('quizzesTab').style.display = tab === 'quizzes' ? 'block' : 'none';
+            document.getElementById('leaderboardTab').style.display = tab === 'leaderboard' ? 'block' : 'none';
+            document.getElementById('historyTab').style.display = tab === 'history' ? 'block' : 'none';
+        }
+
+        function shuffleArray(array) {
+            var newArray = array.slice();
+            for (var i = newArray.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = newArray[i];
+                newArray[i] = newArray[j];
+                newArray[j] = temp;
+            }
+            return newArray;
+        }
+
+        function startQuiz(type) {
+            currentQuiz = type;
+            currentQuestion = 0;
+            score = 0;
+            mbtiScores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+
+            if (type === 'mbti') {
+                questions = shuffleArray(mbtiQuestions);
+            } else if (type === 'iq') {
+                questions = shuffleArray(iqQuestions);
+            } else {
+                questions = shuffleArray(triviaQuestions);
+            }
+
+            document.getElementById('menuScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            document.getElementById('quizScreen').classList.add('fade-in');
+            document.getElementById('timer').style.display = type === 'iq' ? 'block' : 'none';
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= questions.length) {
+                showResult();
+                return;
+            }
+
+            var q = questions[currentQuestion];
+            var progress = (currentQuestion / questions.length) * 100;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('questionCounter').textContent = 'Pertanyaan ' + (currentQuestion + 1) + ' dari ' + questions.length;
+            document.getElementById('questionText').textContent = q.question;
+
+            var optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            if (currentQuiz === 'mbti') {
+                for (var i = 0; i < q.options.length; i++) {
+                    var option = q.options[i];
+                    var btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option.text;
+                    btn.setAttribute('data-type', option.type);
+                    btn.onclick = function() {
+                        selectMBTIAnswer(this.getAttribute('data-type'));
+                    };
+                    optionsContainer.appendChild(btn);
+                }
+            } else {
+                for (var j = 0; j < q.options.length; j++) {
+                    var btn2 = document.createElement('button');
+                    btn2.className = 'option-btn';
+                    btn2.textContent = q.options[j];
+                    btn2.setAttribute('data-index', j);
+                    btn2.onclick = function() {
+                        selectAnswer(parseInt(this.getAttribute('data-index')));
+                    };
+                    optionsContainer.appendChild(btn2);
+                }
+            }
+
+            if (currentQuiz === 'iq') {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            timeLeft = 30;
+            document.getElementById('timerDisplay').textContent = timeLeft;
+            document.getElementById('timerDisplay').classList.remove('pulse');
+            
+            if (gameTimer) clearInterval(gameTimer);
+            
+            gameTimer = setInterval(function() {
+                timeLeft--;
+                document.getElementById('timerDisplay').textContent = timeLeft;
+                
+                if (timeLeft <= 10) {
+                    document.getElementById('timerDisplay').classList.add('pulse');
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(gameTimer);
+                    selectAnswer(-1);
+                }
+            }, 1000);
+        }
+
+        function selectMBTIAnswer(type) {
+            mbtiScores[type]++;
+            currentQuestion++;
+            setTimeout(showQuestion, 300);
+        }
+
+        function selectAnswer(index) {
+            if (gameTimer) clearInterval(gameTimer);
+            
+            var q = questions[currentQuestion];
+            var buttons = document.querySelectorAll('.option-btn');
+            
+            if (index === q.correct) {
+                score++;
+                if (index >= 0) buttons[index].classList.add('correct');
+            } else {
+                if (index >= 0) buttons[index].classList.add('wrong');
+                buttons[q.correct].classList.add('correct');
+            }
+
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].style.pointerEvents = 'none';
+            }
+            
+            currentQuestion++;
+            setTimeout(showQuestion, 1000);
+        }
+
+        function showResult() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+            document.getElementById('resultScreen').classList.add('fade-in');
+
+            if (currentQuiz === 'mbti') {
+                var type = 
+                    (mbtiScores.E > mbtiScores.I ? 'E' : 'I') +
+                    (mbtiScores.S > mbtiScores.N ? 'S' : 'N') +
+                    (mbtiScores.T > mbtiScores.F ? 'T' : 'F') +
+                    (mbtiScores.J > mbtiScores.P ? 'J' : 'P');
+
+                var result = mbtiDescriptions[type] || { title: "Tipe Unik", desc: "Kamu memiliki kombinasi kepribadian yang unik!" };
+
+                document.getElementById('resultIcon').textContent = '🎭';
+                document.getElementById('resultTitle').textContent = 'Tipe Kepribadianmu:';
+                document.getElementById('resultType').textContent = type + ' - ' + result.title;
+                document.getElementById('resultDescription').textContent = result.desc;
+                document.getElementById('resultScore').textContent = '';
+
+                var traitsHTML = 
+                    '<div class="trait-card"><div class="label">Energi</div><div class="value">' + (mbtiScores.E > mbtiScores.I ? 'Ekstrovert' : 'Introvert') + '</div></div>' +
+                    '<div class="trait-card"><div class="label">Informasi</div><div class="value">' + (mbtiScores.S > mbtiScores.N ? 'Sensing' : 'Intuisi') + '</div></div>' +
+                    '<div class="trait-card"><div class="label">Keputusan</div><div class="value">' + (mbtiScores.T > mbtiScores.F ? 'Thinking' : 'Feeling') + '</div></div>' +
+                    '<div class="trait-card"><div class="label">Gaya Hidup</div><div class="value">' + (mbtiScores.J > mbtiScores.P ? 'Judging' : 'Perceiving') + '</div></div>';
+                
+                document.getElementById('mbtiTraits').innerHTML = traitsHTML;
+                document.getElementById('mbtiTraits').style.display = 'grid';
+            } else {
+                var percentage = (score / questions.length) * 100;
+                var icon, comment;
+
+                if (currentQuiz === 'iq') {
+                    var iqEstimate;
+                    if (percentage >= 90) { iqEstimate = '130+'; comment = 'Luar biasa! Kecerdasan sangat tinggi!'; }
+                    else if (percentage >= 70) { iqEstimate = '115-129'; comment = 'Sangat bagus! Di atas rata-rata!'; }
+                    else if (percentage >= 50) { iqEstimate = '100-114'; comment = 'Bagus! Kecerdasan seimbang.'; }
+                    else if (percentage >= 30) { iqEstimate = '85-99'; comment = 'Cukup baik! Terus berlatih ya!'; }
+                    else { iqEstimate = '<85'; comment = 'Jangan menyerah! Terus berlatih!'; }
+
+                    document.getElementById('resultIcon').textContent = '🧠';
+                    document.getElementById('resultTitle').textContent = 'Estimasi IQ-mu:';
+                    document.getElementById('resultType').textContent = iqEstimate;
+                } else {
+                    if (percentage >= 90) { icon = '🏆'; comment = 'Wow! Kamu seperti ensiklopedia berjalan!'; }
+                    else if (percentage >= 70) { icon = '🌟'; comment = 'Hebat! Pengetahuanmu sangat luas!'; }
+                    else if (percentage >= 50) { icon = '📚'; comment = 'Bagus! Terus belajar dan berkembang!'; }
+                    else { icon = '🎯'; comment = 'Setiap hari adalah kesempatan untuk belajar!'; }
+
+                    document.getElementById('resultIcon').textContent = icon;
+                    document.getElementById('resultTitle').textContent = 'Hasil Pengetahuan Umum:';
+                    document.getElementById('resultType').textContent = Math.round(percentage) + '%';
+                }
+
+                document.getElementById('resultDescription').textContent = comment;
+                document.getElementById('resultScore').textContent = 'Skor: ' + score + '/' + questions.length + ' (' + Math.round(percentage) + '%)';
+                document.getElementById('mbtiTraits').style.display = 'none';
+            }
+        }
+
+        function restartQuiz() {
+            startQuiz(currentQuiz);
+        }
+
+        function goToMenu() {
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('menuScreen').style.display = 'flex';
+            if (gameTimer) clearInterval(gameTimer);
+        }
+    </script>
+</body>
+</html>
