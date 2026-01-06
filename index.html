@@ -36,7 +36,7 @@
             position: relative;
         }
 
-        /* Animated Background */
+        /* Animated Background - OPTIMIZED */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -54,17 +54,10 @@
             background: 
                 radial-gradient(ellipse at 20% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 80%, rgba(78, 205, 196, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(255, 230, 109, 0.08) 0%, transparent 60%),
                 linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
-            animation: gradientShift 15s ease-in-out infinite;
         }
 
-        @keyframes gradientShift {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
-        /* Floating Particles */
+        /* Simplified Particles - Only 5 */
         .particles {
             position: absolute;
             width: 100%;
@@ -77,133 +70,37 @@
             height: 4px;
             background: var(--accent);
             border-radius: 50%;
-            animation: floatParticle 20s linear infinite;
-            opacity: 0.6;
-            box-shadow: 0 0 10px var(--accent);
+            opacity: 0.5;
         }
 
-        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 25s; }
-        .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 20s; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
-        .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 28s; }
-        .particle:nth-child(4) { left: 40%; animation-delay: 6s; animation-duration: 22s; background: var(--secondary); box-shadow: 0 0 10px var(--secondary); }
-        .particle:nth-child(5) { left: 50%; animation-delay: 8s; animation-duration: 30s; }
-        .particle:nth-child(6) { left: 60%; animation-delay: 10s; animation-duration: 18s; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
-        .particle:nth-child(7) { left: 70%; animation-delay: 12s; animation-duration: 24s; }
-        .particle:nth-child(8) { left: 80%; animation-delay: 14s; animation-duration: 26s; background: var(--secondary); box-shadow: 0 0 10px var(--secondary); }
-        .particle:nth-child(9) { left: 90%; animation-delay: 16s; animation-duration: 21s; }
-        .particle:nth-child(10) { left: 5%; animation-delay: 18s; animation-duration: 27s; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .particle:nth-child(1) { left: 15%; top: 20%; }
+        .particle:nth-child(2) { left: 85%; top: 30%; background: var(--primary); }
+        .particle:nth-child(3) { left: 50%; top: 10%; }
+        .particle:nth-child(4) { left: 25%; top: 70%; background: var(--secondary); }
+        .particle:nth-child(5) { left: 75%; top: 80%; }
 
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
-        }
-
-        /* Glowing Orbs */
+        /* Remove heavy orbs - use simple gradient instead */
         .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: orbFloat 10s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--glow-primary);
-            top: 10%;
-            left: -10%;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: var(--glow-secondary);
-            bottom: 10%;
-            right: -15%;
-            animation-delay: 5s;
-        }
-
-        .orb-3 {
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 230, 109, 0.3);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: 2.5s;
-        }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -30px) scale(1.1); }
-            50% { transform: translate(-20px, 20px) scale(0.9); }
-            75% { transform: translate(20px, 30px) scale(1.05); }
-        }
-
-        /* Grid Pattern Overlay */
-        .grid-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+            display: none;
         }
 
         .container {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 35px;
             max-width: 700px;
             width: 100%;
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.5),
-                0 0 0 1px var(--glass-border),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--glass-border);
             position: relative;
             z-index: 1;
-            animation: containerFloat 6s ease-in-out infinite;
         }
 
-        @keyframes containerFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* Glow border effect */
+        /* Remove heavy glow border animation */
         .container::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent), var(--primary));
-            background-size: 400% 400%;
-            border-radius: 26px;
-            z-index: -1;
-            animation: glowBorder 8s ease infinite;
-            opacity: 0.5;
-            filter: blur(10px);
-        }
-
-        @keyframes glowBorder {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            display: none;
         }
 
         .header {
@@ -219,14 +116,7 @@
         .app-logo {
             width: 110px;
             height: 110px;
-            filter: drop-shadow(0 0 30px var(--glow-primary));
-            animation: logoFloat 4s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-8px) rotate(2deg); }
-            75% { transform: translateY(-8px) rotate(-2deg); }
+            filter: drop-shadow(0 4px 15px rgba(255, 107, 107, 0.3));
         }
 
         .header h1 {
@@ -235,21 +125,8 @@
             font-size: 2.5em;
             font-weight: 800;
             margin-bottom: 10px;
-            text-shadow: 
-                0 0 20px var(--glow-primary),
-                0 0 40px var(--glow-primary),
-                2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             letter-spacing: 2px;
-            background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, #fff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: titleShine 3s ease-in-out infinite;
-        }
-
-        @keyframes titleShine {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         .header p {
@@ -268,24 +145,6 @@
             border-radius: 16px;
             margin-bottom: 20px;
             border: 1px solid var(--glass-border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .user-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
         }
 
         .user-info {
@@ -305,13 +164,7 @@
             color: #fff;
             font-weight: bold;
             font-size: 1.2em;
-            box-shadow: 0 0 20px var(--glow-primary);
-            animation: avatarPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes avatarPulse {
-            0%, 100% { box-shadow: 0 0 20px var(--glow-primary); }
-            50% { box-shadow: 0 0 30px var(--glow-secondary); }
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
 
         .user-name {
@@ -345,12 +198,6 @@
 
         .coin-icon {
             font-size: 1.2em;
-            animation: coinSpin 3s ease-in-out infinite;
-        }
-
-        @keyframes coinSpin {
-            0%, 100% { transform: rotateY(0deg); }
-            50% { transform: rotateY(180deg); }
         }
 
         .coin-amount {
@@ -375,28 +222,10 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .claim-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: claimShimmer 2s infinite;
-        }
-
-        @keyframes claimShimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
         }
 
         .claim-btn:hover {
-            transform: translateY(-2px) scale(1.05);
+            transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
         }
 
@@ -405,10 +234,6 @@
             color: #999;
             cursor: not-allowed;
             box-shadow: none;
-        }
-
-        .claim-btn:disabled::before {
-            animation: none;
         }
 
         /* Coin Notification */
@@ -538,38 +363,21 @@
             font-weight: 600;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            position: relative;
-            overflow: hidden;
             box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
         }
 
-        .website-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .website-btn:hover::before {
-            left: 100%;
-        }
-
         .website-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
         }
 
         .website-btn:active {
-            transform: translateY(0) scale(0.98);
+            transform: translateY(0);
         }
 
         .website-btn:disabled {
@@ -587,55 +395,14 @@
             border-radius: 20px;
             padding: 28px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             border: 1px solid var(--glass-border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quiz-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--glow-primary), var(--glow-secondary));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
-        }
-
-        .quiz-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(transparent, rgba(255, 255, 255, 0.1), transparent 30%);
-            animation: rotateGlow 4s linear infinite paused;
-        }
-
-        .quiz-card:hover::after {
-            animation-play-state: running;
-        }
-
-        @keyframes rotateGlow {
-            100% { transform: rotate(360deg); }
         }
 
         .quiz-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-5px);
             border-color: var(--primary);
-            box-shadow: 
-                0 20px 40px rgba(255, 107, 107, 0.2),
-                0 0 30px rgba(255, 107, 107, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        .quiz-card:hover::before {
-            opacity: 0.1;
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.2);
         }
 
         .quiz-card h3 {
@@ -684,23 +451,14 @@
             height: 12px;
             margin-bottom: 30px;
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .progress-fill {
-            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
-            background-size: 200% 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             height: 100%;
             width: 0%;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s ease;
             border-radius: 15px;
-            animation: progressGlow 2s ease-in-out infinite;
-            box-shadow: 0 0 20px var(--glow-primary);
-        }
-
-        @keyframes progressGlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         .question-counter {
@@ -733,44 +491,24 @@
             font-size: 1.05em;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             text-align: left;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .option-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .option-btn:hover::before {
-            left: 100%;
         }
 
         .option-btn:hover {
             background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.05) 100%);
             border-color: var(--primary);
             transform: translateX(10px);
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.2);
         }
 
         .option-btn.correct {
             background: linear-gradient(135deg, rgba(78, 205, 196, 0.4), rgba(78, 205, 196, 0.2));
             border-color: var(--secondary);
-            box-shadow: 0 0 30px rgba(78, 205, 196, 0.3);
         }
 
         .option-btn.wrong {
             background: linear-gradient(135deg, rgba(255, 107, 107, 0.4), rgba(255, 107, 107, 0.2));
             border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
         }
 
         .result-screen {
@@ -869,35 +607,18 @@
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             margin: 5px;
-            position: relative;
-            overflow: hidden;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
         .btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
         }
 
         .btn:active {
-            transform: translateY(0) scale(0.98);
+            transform: translateY(0);
         }
 
         .btn-secondary {
@@ -1004,12 +725,10 @@
             background: transparent;
             color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
             font-size: 0.9em;
-            position: relative;
-            overflow: hidden;
         }
 
         .tab-btn:hover {
@@ -1021,22 +740,6 @@
             background: linear-gradient(135deg, var(--primary), #e55a5a);
             color: #fff;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        .tab-btn.active::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmerTab 2s infinite;
-        }
-
-        @keyframes shimmerTab {
-            0% { left: -100%; }
-            100% { left: 100%; }
         }
 
         @media (max-width: 600px) {
@@ -1221,18 +924,10 @@
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
+    <!-- Simplified Background -->
     <div class="bg-animation">
         <div class="bg-gradient"></div>
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
         <div class="particles">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
             <div class="particle"></div>
             <div class="particle"></div>
             <div class="particle"></div>
@@ -1243,48 +938,53 @@
     <div class="container">
         <div class="header">
             <div class="logo-container">
-                <svg class="app-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <svg class="app-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                     <!-- Background Circle -->
                     <defs>
                         <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#ff6b6b"/>
-                            <stop offset="100%" style="stop-color:#4ecdc4"/>
+                            <stop offset="0%" style="stop-color:#e94560"/>
+                            <stop offset="100%" style="stop-color:#f39c12"/>
                         </linearGradient>
                         <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#ffe66d"/>
-                            <stop offset="100%" style="stop-color:#ffd93d"/>
+                            <stop offset="0%" style="stop-color:#FFD700"/>
+                            <stop offset="100%" style="stop-color:#FFA500"/>
                         </linearGradient>
-                        <filter id="glow">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#000" flood-opacity="0.3"/>
                         </filter>
                     </defs>
-                    <circle cx="60" cy="60" r="55" fill="url(#bgGrad)"/>
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
                     
-                    <!-- Crown with glow -->
-                    <g filter="url(#glow)">
-                        <path d="M30 50 L40 70 L50 55 L60 70 L70 55 L80 70 L90 50 L85 80 L35 80 Z" fill="url(#crownGrad)" stroke="#fff" stroke-width="2"/>
+                    <!-- Main Circle Background -->
+                    <circle cx="256" cy="256" r="240" fill="url(#bgGrad)" filter="url(#shadow)"/>
+                    
+                    <!-- Inner glow circle -->
+                    <circle cx="256" cy="256" r="200" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="8"/>
+                    
+                    <!-- Crown -->
+                    <path d="M100 220 L150 320 L200 250 L256 320 L312 250 L362 320 L412 220 L390 370 L122 370 Z" 
+                          fill="url(#crownGrad)" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+                    
+                    <!-- Crown jewels -->
+                    <circle cx="175" cy="290" r="12" fill="#E74C3C"/>
+                    <circle cx="256" cy="270" r="15" fill="#3498DB"/>
+                    <circle cx="337" cy="290" r="12" fill="#2ECC71"/>
+                    
+                    <!-- Brain/Head base -->
+                    <ellipse cx="256" cy="420" rx="90" ry="50" fill="#fff" opacity="0.95"/>
+                    <ellipse cx="256" cy="415" rx="70" ry="35" fill="rgba(233,69,96,0.2)"/>
+                    
+                    <!-- Stars - Properly Aligned -->
+                    <g fill="#FFD700">
+                        <!-- Left star -->
+                        <polygon points="120,100 130,130 162,130 137,150 148,182 120,160 92,182 103,150 78,130 110,130"/>
+                        <!-- Center star (top) -->
+                        <polygon points="256,60 270,100 312,100 280,128 292,170 256,142 220,170 232,128 200,100 242,100"/>
+                        <!-- Right star -->
+                        <polygon points="392,100 402,130 434,130 409,150 420,182 392,160 364,182 375,150 350,130 382,130"/>
                     </g>
                     
-                    <!-- Brain/Head silhouette -->
-                    <ellipse cx="60" cy="90" rx="20" ry="12" fill="#fff" opacity="0.95"/>
-                    
-                    <!-- Animated Stars -->
-                    <g class="stars">
-                        <polygon points="25,35 27,40 32,40 28,44 30,50 25,46 20,50 22,44 18,40 23,40" fill="#ffe66d">
-                            <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
-                        </polygon>
-                        <polygon points="95,35 97,40 102,40 98,44 100,50 95,46 90,50 92,44 88,40 93,40" fill="#ffe66d">
-                            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-                        </polygon>
-                        <polygon points="60,20 62,25 67,25 63,29 65,35 60,31 55,35 57,29 53,25 58,25" fill="#ffe66d">
-                            <animate attributeName="opacity" values="1;0.7;1" dur="1.5s" repeatCount="indefinite"/>
-                        </polygon>
-                    </g>
+                    <!-- Q letter stylized -->
+                    <text x="256" y="440" font-family="Arial Black, sans-serif" font-size="60" fill="#e94560" text-anchor="middle" font-weight="bold">Q</text>
                 </svg>
             </div>
             <h1>Quiz Master</h1>
