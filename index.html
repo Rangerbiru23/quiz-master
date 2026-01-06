@@ -196,8 +196,10 @@
             border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
-        .coin-icon {
-            font-size: 1.2em;
+        .coin-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85em;
+            font-weight: 500;
         }
 
         .coin-amount {
@@ -205,7 +207,6 @@
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             font-size: 1.1em;
-            text-shadow: 0 0 10px rgba(255, 230, 109, 0.5);
         }
 
         .claim-btn {
@@ -252,14 +253,6 @@
             box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
             z-index: 9999;
             animation: coinNotifAnim 2.5s ease forwards;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .coin-notification .coin-icon {
-            font-size: 1.3em;
-            animation: coinBounce 0.5s ease infinite;
         }
 
         @keyframes coinNotifAnim {
@@ -282,11 +275,6 @@
                 opacity: 0; 
                 transform: translateX(-50%) translateY(-50px) scale(0.8); 
             }
-        }
-
-        @keyframes coinBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
         }
 
         .sync-status {
@@ -572,9 +560,7 @@
             border-radius: 16px;
             padding: 15px 30px;
             margin-bottom: 25px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
+            display: inline-block;
             animation: coinEarnedPop 0.5s ease;
         }
 
@@ -584,17 +570,11 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .coin-earned .coin-icon {
-            font-size: 1.8em;
-            animation: coinBounce 0.5s ease infinite;
-        }
-
         .coin-earned .coin-text {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.3em;
             font-weight: 700;
             color: var(--accent);
-            text-shadow: 0 0 10px rgba(255, 230, 109, 0.5);
         }
 
         .btn {
@@ -1001,7 +981,7 @@
             </div>
             <div class="coin-section">
                 <div class="coin-display">
-                    <span class="coin-icon">💰</span>
+                    <span class="coin-label">KOIN:</span>
                     <span class="coin-amount" id="coinAmount">0</span>
                 </div>
                 <button class="claim-btn" id="claimBtn" onclick="claimCoin()">
@@ -1090,7 +1070,6 @@
             <div id="resultDescription" class="result-description"></div>
             <div id="resultScore" class="result-score"></div>
             <div id="coinEarned" class="coin-earned" style="display: none;">
-                <span class="coin-icon">💰</span>
                 <span class="coin-text">+<span id="coinEarnedAmount">0</span> Koin</span>
             </div>
             <button class="btn" onclick="restartQuiz()">🔄 Coba Lagi</button>
@@ -1154,7 +1133,7 @@
             var claimBtn = document.getElementById('claimBtn');
             if (userCoins >= MIN_COINS_TO_CLAIM) {
                 claimBtn.disabled = false;
-                claimBtn.innerHTML = '<span>🎁 CLAIM COIN</span>';
+                claimBtn.innerHTML = '<span>CLAIM KOIN</span>';
             } else {
                 claimBtn.disabled = true;
                 claimBtn.innerHTML = '<span>CLAIM MIN 15 KOIN</span>';
@@ -1184,7 +1163,7 @@
                 showCoinNotification(earnedCoins);
                 
                 // Show coin earned in result screen
-                document.getElementById('coinEarned').style.display = 'inline-flex';
+                document.getElementById('coinEarned').style.display = 'inline-block';
                 document.getElementById('coinEarnedAmount').textContent = earnedCoins;
             } else {
                 document.getElementById('coinEarned').style.display = 'none';
@@ -1197,7 +1176,7 @@
             // Create notification element
             var notification = document.createElement('div');
             notification.className = 'coin-notification';
-            notification.innerHTML = '<span class="coin-icon">💰</span> +' + coins + ' Koin!';
+            notification.innerHTML = '+' + coins + ' Koin!';
             document.body.appendChild(notification);
             
             // Remove after animation
