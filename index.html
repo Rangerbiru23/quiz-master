@@ -1171,25 +1171,42 @@
 
         // Coin Functions
         function loadCoins() {
-            var savedCoins = localStorage.getItem('quiz_user_coins');
-            userCoins = savedCoins ? parseInt(savedCoins) : 0;
+            try {
+                var savedCoins = localStorage.getItem('quiz_user_coins');
+                userCoins = savedCoins ? parseInt(savedCoins) : 0;
+                console.log('Loaded coins:', userCoins);
+            } catch(e) {
+                console.log('localStorage error:', e);
+                userCoins = 0;
+            }
             updateCoinDisplay();
         }
 
         function saveCoins() {
-            localStorage.setItem('quiz_user_coins', userCoins.toString());
+            try {
+                localStorage.setItem('quiz_user_coins', userCoins.toString());
+                console.log('Saved coins:', userCoins);
+            } catch(e) {
+                console.log('Save error:', e);
+            }
             updateCoinDisplay();
         }
 
         function updateCoinDisplay() {
-            document.getElementById('coinAmount').textContent = userCoins;
+            var coinEl = document.getElementById('coinAmount');
+            if (coinEl) {
+                coinEl.textContent = userCoins;
+                console.log('Updated display:', userCoins);
+            }
             var claimBtn = document.getElementById('claimBtn');
-            if (userCoins >= MIN_COINS_TO_CLAIM) {
-                claimBtn.disabled = false;
-                claimBtn.innerHTML = '<span>CLAIM KOIN</span>';
-            } else {
-                claimBtn.disabled = true;
-                claimBtn.innerHTML = '<span>CLAIM MIN 15 KOIN</span>';
+            if (claimBtn) {
+                if (userCoins >= MIN_COINS_TO_CLAIM) {
+                    claimBtn.disabled = false;
+                    claimBtn.innerHTML = '<span>CLAIM KOIN</span>';
+                } else {
+                    claimBtn.disabled = true;
+                    claimBtn.innerHTML = '<span>CLAIM MIN 15 KOIN</span>';
+                }
             }
         }
 
@@ -1197,29 +1214,64 @@
             var earnedCoins = 0;
             
             if (correctAnswers === totalQuestions) {
-                // Betul semua = 10 coin
                 earnedCoins = 10;
             } else if (correctAnswers >= 10) {
-                // 10-14 betul = 7 coin
                 earnedCoins = 7;
             } else if (correctAnswers >= 3) {
-                // 3-9 betul = 3 coin
                 earnedCoins = 3;
             } else if (correctAnswers >= 1) {
-                // 1-2 betul = 1 coin
                 earnedCoins = 1;
             }
             
+            // Debug alert - hapus nanti setelah fix
+            alert('Jawaban benar: ' + correctAnswers + '/' + totalQuestions + '\nKoin dapat: ' + earnedCoins + '\nKoin sebelum: ' + userCoins);
+            
             if (earnedCoins > 0) {
-                userCoins += earnedCoins;
-                saveCoins();
+                userCoins = userCoins + earnedCoins;
+                
+                // Debug alert
+                alert('Koin sekarang: ' + userCoins);
+                
+                // Save to localStorage
+                try {
+                    localStorage.setItem('quiz_user_coins', userCoins.toString());
+                } catch(e) {
+                    alert('Error save: ' + e);
+                }
+                
+                // Update display immediately
+                var coinEl = document.getElementById('coinAmount');
+                if (coinEl) {
+                    coinEl.textContent = userCoins;
+                } else {
+                    alert('Element coinAmount tidak ditemukan!');
+                }
+                
+                // Update claim button
+                var claimBtn = document.getElementById('claimBtn');
+                if (claimBtn) {
+                    if (userCoins >= MIN_COINS_TO_CLAIM) {
+                        claimBtn.disabled = false;
+                        claimBtn.innerHTML = '<span>CLAIM KOIN</span>';
+                    } else {
+                        claimBtn.disabled = true;
+                        claimBtn.innerHTML = '<span>CLAIM MIN 15 KOIN</span>';
+                    }
+                }
+                
                 showCoinNotification(earnedCoins);
                 
-                // Show coin earned in result screen
-                document.getElementById('coinEarned').style.display = 'inline-block';
-                document.getElementById('coinEarnedAmount').textContent = earnedCoins;
+                var coinEarnedEl = document.getElementById('coinEarned');
+                var coinAmountEl = document.getElementById('coinEarnedAmount');
+                if (coinEarnedEl && coinAmountEl) {
+                    coinEarnedEl.style.display = 'inline-block';
+                    coinAmountEl.textContent = earnedCoins;
+                }
             } else {
-                document.getElementById('coinEarned').style.display = 'none';
+                var coinEarnedEl = document.getElementById('coinEarned');
+                if (coinEarnedEl) {
+                    coinEarnedEl.style.display = 'none';
+                }
             }
             
             return earnedCoins;
@@ -1257,10 +1309,18 @@
 
         // Load Website URL dari Supabase
         window.onload = function() {
+            console.log('Window loaded');
             loadWebsiteUrl();
             loadCoins();
             initializeUI();
         };
+
+        // Fallback for DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            loadCoins();
+            initializeUI();
+        });
 
         function initializeUI() {
             // Load player name and stats
@@ -1800,6 +1860,9 @@
                     // Save Trivia result ke Supabase
                     saveResult('trivia', Math.round(percentage), Math.round(percentage) + '%');
                     
+                    // Debug: cek sebelum addCoins
+                    alert('DEBUG Trivia - Score: ' + score + ', Questions: ' + questions.length);
+                    
                     // Add coins for Trivia quiz
                     addCoins(score, questions.length);
                 }
@@ -1819,6 +1882,8 @@
             document.getElementById('quizScreen').style.display = 'none';
             document.getElementById('menuScreen').style.display = 'flex';
             if (gameTimer) clearInterval(gameTimer);
+            // Refresh coin display when returning to menu
+            updateCoinDisplay();
         }
     </script>
 </body>
