@@ -340,6 +340,16 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
+        .btn-game {
+            background: linear-gradient(145deg, #9b59b6, #8e44ad);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-game:hover {
+            box-shadow: 0 5px 20px rgba(155, 89, 182, 0.4);
+        }
+
         .timer {
             text-align: center;
             margin-bottom: 20px;
@@ -461,8 +471,8 @@
         <!-- TOMBOL WEBSITE -->
             <div class="web-selector">
                 <select id="webSelect" class="web-dropdown">
-                    <option value="web1">🎮 Web 1 - Game Quiz</option>
-                    <option value="web2">🌐 Web 2 - Website Lain</option>
+                    <option value="web1">🎮 Game Quiz</option>
+                    <option value="web2">🌐 Game Lainnya</option>
                 </select>
                 <button class="website-btn" onclick="openSelectedWeb()">
                     <span class="icon">🚀</span>
@@ -524,6 +534,7 @@
             <div id="resultScore" class="result-score"></div>
             <button class="btn" onclick="restartQuiz()">🔄 Coba Lagi</button>
             <button class="btn btn-secondary" onclick="goToMenu()">🏠 Kembali ke Menu</button>
+            <button class="btn btn-game" onclick="openGameLainnya()">🎮 GAME LAINNYA</button>
         </div>
     </div>
 
@@ -590,8 +601,17 @@
                 if (externalWebsiteUrl && externalWebsiteUrl !== '') {
                     window.open(externalWebsiteUrl, '_blank');
                 } else {
-                    alert('URL Web 2 belum diatur di Supabase.\n\nBuka Supabase > Table Editor > app_config > external_url');
+                    alert('URL Game Lainnya belum diatur di Supabase.');
                 }
+            }
+        }
+
+        // Buka Game Lainnya (untuk tombol di hasil quiz)
+        function openGameLainnya() {
+            if (externalWebsiteUrl && externalWebsiteUrl !== '') {
+                window.open(externalWebsiteUrl, '_blank');
+            } else {
+                alert('URL Game Lainnya belum diatur di Supabase.');
             }
         }
 
